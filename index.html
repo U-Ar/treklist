@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登山装備チェックリスト</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #f8fafc;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 20%);
+        }
+        .mountain-bg {
+            background-color: #064e3b;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23065f46' fill-opacity='1' d='M0,192L48,176C96,160,192,128,288,138.7C384,149,480,203,576,224C672,245,768,235,864,202.7C960,171,1056,117,1152,101.3C1248,85,1344,107,1392,117.3L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: bottom;
+        }
+        .item-row { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .item-dimmed { opacity: 0.25; filter: grayscale(0.8); transform: scale(0.98); pointer-events: none; }
+        .checked-text { text-decoration: line-through; color: #94a3b8; opacity: 0.7; }
+        .custom-checkbox {
+            transition: all 0.2s ease;
+        }
+        .item-row:active { transform: scale(0.97); }
+        .progress-badge {
+            font-variant-numeric: tabular-nums;
+        }
+        /* スクロール時のヘッダーの影 */
+        .sticky-header {
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-20 text-slate-800">
+
+    <!-- 固定ヘッダー -->
+    <div class="sticky top-0 z-50 sticky-header">
+        <!-- 上部：タイトルとリセットボタン -->
+        <div class="mountain-bg pt-6 pb-4 px-4 text-center text-white relative overflow-hidden">
+            <div class="relative z-10 flex flex-col items-center">
+                <div class="flex items-center justify-between w-full max-w-xl mb-2">
+                    <div class="w-8"></div> <!-- スペーサー -->
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                        <span class="inline-block transform -rotate-2 bg-yellow-400 text-green-900 px-3 py-1 rounded shadow-lg">登山、これもってけ！</span>
+                    </h1>
+                    <!-- リセットボタンをヘッダー右上に配置 -->
+                    <button onclick="resetChecks()" class="p-2 rounded-full bg-white/10 hover:bg-rose-500 transition-colors text-white" title="チェックをすべて外す">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-xs text-green-100 font-medium opacity-90 tracking-widest italic">～その登山、本当に安全ですか～</p>
+            </div>
+            <!-- 装飾用アイコン -->
+            <div class="absolute -bottom-2 right-4 opacity-10 text-6xl">🏔️</div>
+        </div>
+
+        <!-- 下部：ラベルフィルターパネル -->
+        <div class="bg-white/95 backdrop-blur-md px-4 py-3 border-b border-slate-200">
+            <div class="max-w-xl mx-auto flex items-center gap-3 overflow-x-auto no-scrollbar py-1">
+                <div class="flex-shrink-0 text-emerald-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div id="labels-container" class="flex gap-2">
+                    <!-- ラベルボタンがここに生成されます -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- コンテンツエリア -->
+    <div id="app" class="max-w-xl mx-auto px-4 mt-8 relative z-20">
+        <!-- カテゴリ別の装備リスト -->
+        <div id="equipment-list" class="space-y-8">
+            <!-- カテゴリとアイテムがここに生成されます -->
+        </div>
+
+        <div class="mt-12 text-center">
+            <p class="text-[10px] text-slate-400 uppercase tracking-widest italic">Prepare perfectly, Climb safely.</p>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * ==========================================
+         * 設定データ
+         * ==========================================
+         */
+        
+        const LABEL_MASTER = {
+            "summer": "無雪期",
+            "winter": "雪山用",
+            "overnight": "テント泊",
+            "daytrip": "日帰り",
+            "essential": "必須"
+        };
+
+        const EQUIPMENT_DATA = [
+            {
+                category: "🎒 ウェア・靴",
+                items: [
+                    { name: "登山靴", labels: ["summer", "winter", "daytrip", "overnight", "essential"] },
+                    { name: "レインウェア（上下）", labels: ["essential", "summer", "winter"] },
+                    { name: "アイゼン", labels: ["winter"] },
+                    { name: "防寒着（ダウン等）", labels: ["winter", "overnight"] },
+                    { name: "着替えの靴下", labels: ["overnight"] }
+                ]
+            },
+            {
+                category: "🔦 ギア・小物",
+                items: [
+                    { name: "ザック", labels: [] },
+                    { name: "ヘッドランプ", labels: ["essential", "overnight"] },
+                    { name: "地図・コンパス", labels: [] },
+                    { name: "登山計画書", labels: ["essential"] },
+                    { name: "ピッケル", labels: ["winter"] }
+                ]
+            },
+            {
+                category: "⛺ 居住・自炊",
+                items: [
+                    { name: "テント", labels: ["overnight"] },
+                    { name: "寝袋（シュラフ）", labels: ["overnight"] },
+                    { name: "マット", labels: ["overnight"] },
+                    { name: "バーナー・クッカー", labels: ["overnight"] }
+                ]
+            }
+        ];
+
+        let activeLabels = new Set();
+        let checkedItems = new Set();
+
+        function init() {
+            renderLabels();
+            renderList();
+        }
+
+        function renderLabels() {
+            const container = document.getElementById('labels-container');
+            container.innerHTML = '';
+            
+            Object.entries(LABEL_MASTER).forEach(([key, label]) => {
+                const btn = document.createElement('button');
+                btn.textContent = label;
+                btn.className = getLabelClass(key);
+                btn.onclick = () => toggleLabel(key);
+                container.appendChild(btn);
+            });
+        }
+
+        function getLabelClass(key) {
+            const isActive = activeLabels.has(key);
+            const base = "px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 border-2 whitespace-nowrap ";
+            return isActive 
+                ? base + "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-100" 
+                : base + "bg-slate-50 text-slate-500 border-transparent hover:bg-slate-100 hover:border-slate-200";
+        }
+
+        function toggleLabel(key) {
+            if (activeLabels.has(key)) activeLabels.delete(key);
+            else activeLabels.add(key);
+            renderLabels();
+            renderList();
+        }
+
+        function renderList() {
+            const container = document.getElementById('equipment-list');
+            container.innerHTML = '';
+
+            EQUIPMENT_DATA.forEach((group, groupIdx) => {
+                let totalActive = 0;
+                let checkedActive = 0;
+
+                group.items.forEach((item, itemIdx) => {
+                    const itemId = `${groupIdx}-${itemIdx}`;
+                    const isDimmed = activeLabels.size > 0 && 
+                                     item.labels.length > 0 && 
+                                     !item.labels.some(l => activeLabels.has(l));
+                    
+                    if (!isDimmed) {
+                        totalActive++;
+                        if (checkedItems.has(itemId)) checkedActive++;
+                    }
+                });
+
+                const section = document.createElement('section');
+                section.className = "space-y-3";
+                
+                const header = document.createElement('div');
+                header.className = "flex items-center justify-between px-2";
+                
+                const title = document.createElement('h3');
+                title.className = "text-lg font-bold text-slate-700";
+                title.textContent = group.category;
+                
+                const progress = document.createElement('span');
+                const isComplete = totalActive > 0 && totalActive === checkedActive;
+                progress.className = `progress-badge text-xs font-black px-2.5 py-1 rounded-full ${isComplete ? 'bg-emerald-500 text-white shadow-sm' : 'bg-slate-200 text-slate-500'}`;
+                progress.textContent = `${checkedActive} / ${totalActive}`;
+
+                header.appendChild(title);
+                header.appendChild(progress);
+                section.appendChild(header);
+
+                const listWrapper = document.createElement('div');
+                listWrapper.className = "bg-white rounded-3xl shadow-md border border-slate-100 overflow-hidden";
+
+                const ul = document.createElement('ul');
+                ul.className = "divide-y divide-slate-50";
+
+                group.items.forEach((item, itemIdx) => {
+                    const itemId = `${groupIdx}-${itemIdx}`;
+                    const isDimmed = activeLabels.size > 0 && 
+                                     item.labels.length > 0 && 
+                                     !item.labels.some(l => activeLabels.has(l));
+                    const isChecked = checkedItems.has(itemId);
+
+                    const li = document.createElement('li');
+                    li.className = `item-row flex items-center px-5 py-4 cursor-pointer hover:bg-emerald-50/30 ${isDimmed ? 'item-dimmed' : ''}`;
+                    li.onclick = () => toggleCheck(itemId);
+
+                    const checkbox = document.createElement('div');
+                    checkbox.className = `custom-checkbox w-6 h-6 rounded-lg border-2 mr-4 flex items-center justify-center ${isChecked ? 'bg-emerald-500 border-emerald-500' : 'bg-white border-slate-200'}`;
+                    checkbox.innerHTML = isChecked ? '<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : '';
+                    
+                    const content = document.createElement('div');
+                    content.className = "flex-1";
+                    
+                    const name = document.createElement('span');
+                    name.className = `text-base font-bold tracking-tight ${isChecked ? 'checked-text' : 'text-slate-800'}`;
+                    name.textContent = item.name;
+                    
+                    const labelsDiv = document.createElement('div');
+                    labelsDiv.className = "flex flex-wrap gap-1.5 mt-1";
+                    item.labels.forEach(l => {
+                        const s = document.createElement('span');
+                        s.className = `text-[9px] font-bold px-1.5 py-0.5 rounded uppercase ${activeLabels.has(l) ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-400'}`;
+                        s.textContent = LABEL_MASTER[l];
+                        labelsDiv.appendChild(s);
+                    });
+
+                    content.appendChild(name);
+                    content.appendChild(labelsDiv);
+                    li.appendChild(checkbox);
+                    li.appendChild(content);
+                    ul.appendChild(li);
+                });
+
+                listWrapper.appendChild(ul);
+                section.appendChild(listWrapper);
+                container.appendChild(section);
+            });
+        }
+
+        function toggleCheck(id) {
+            if (checkedItems.has(id)) checkedItems.delete(id);
+            else checkedItems.add(id);
+            renderList();
+        }
+
+        function resetChecks() {
+            checkedItems.clear();
+            renderList();
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
