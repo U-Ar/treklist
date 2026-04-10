@@ -269,18 +269,18 @@
                 });
 
                 const section = document.createElement('section');
-                section.className = "space-y-3";
+                section.className = "space-y-1.5";
                 
                 const header = document.createElement('div');
                 header.className = "flex items-center justify-between px-2";
                 
                 const title = document.createElement('h3');
-                title.className = "text-lg font-bold text-slate-700";
+                title.className = "text-sm font-black text-slate-700 tracking-tight";
                 title.textContent = group.category;
                 
                 const progress = document.createElement('span');
                 const isComplete = totalActive > 0 && totalActive === checkedActive;
-                progress.className = `progress-badge text-xs font-black px-2.5 py-1 rounded-full ${isComplete ? 'bg-emerald-500 text-white shadow-sm' : 'bg-slate-200 text-slate-500'}`;
+                progress.className = `progress-badge text-[9px] font-black px-2 py-0.5 rounded transition-all ${isComplete ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-600'}`;
                 progress.textContent = `${checkedActive} / ${totalActive}`;
 
                 header.appendChild(title);
@@ -288,7 +288,7 @@
                 section.appendChild(header);
 
                 const listWrapper = document.createElement('div');
-                listWrapper.className = "bg-white rounded-3xl shadow-md border border-slate-100 overflow-hidden";
+                listWrapper.className = "bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden";
 
                 const ul = document.createElement('ul');
                 ul.className = "divide-y divide-slate-50";
@@ -301,25 +301,26 @@
                     const isChecked = checkedItems.has(itemId);
 
                     const li = document.createElement('li');
-                    li.className = `item-row flex items-center px-5 py-4 cursor-pointer hover:bg-emerald-50/30 ${isDimmed ? 'item-dimmed' : ''}`;
+                    li.className = `item-row flex items-center px-4 py-2 cursor-pointer hover:bg-emerald-50/30 ${isDimmed ? 'item-dimmed' : ''}`;
                     li.onclick = () => toggleCheck(itemId);
 
                     const checkbox = document.createElement('div');
-                    checkbox.className = `custom-checkbox w-6 h-6 rounded-lg border-2 mr-4 flex items-center justify-center ${isChecked ? 'bg-emerald-500 border-emerald-500' : 'bg-white border-slate-200'}`;
-                    checkbox.innerHTML = isChecked ? '<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : '';
+                    checkbox.className = `custom-checkbox w-5 h-5 rounded-md border-2 mr-3 flex-shrink-0 flex items-center justify-center ${isChecked ? 'bg-emerald-500 border-emerald-500' : 'bg-white border-slate-200'}`;
+                    checkbox.innerHTML = isChecked ? '<svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>' : '';
                     
                     const content = document.createElement('div');
-                    content.className = "flex-1";
+                    content.className = "flex-1 min-w-0";
                     
                     const name = document.createElement('span');
-                    name.className = `text-base font-bold tracking-tight ${isChecked ? 'checked-text' : 'text-slate-800'}`;
+                    name.className = `text-[13px] font-bold tracking-tight block truncate ${isChecked ? 'checked-text' : 'text-slate-800'}`;
                     name.textContent = item.name;
                     
                     const labelsDiv = document.createElement('div');
-                    labelsDiv.className = "flex flex-wrap gap-1.5 mt-1";
+                    labelsDiv.className = "flex flex-wrap gap-1 mt-0.5";
                     item.labels.forEach(l => {
                         const s = document.createElement('span');
-                        s.className = `text-[9px] font-bold px-1.5 py-0.5 rounded uppercase ${activeLabels.has(l) ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-400'}`;
+                        const isLabelActive = activeLabels.has(l);
+                        s.className = `text-[7px] font-black px-1 rounded transition-all ${isLabelActive ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-400'}`;
                         s.textContent = LABEL_MASTER[l];
                         labelsDiv.appendChild(s);
                     });
