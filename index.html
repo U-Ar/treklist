@@ -96,41 +96,117 @@
          */
         
         const LABEL_MASTER = {
-            "summer": "無雪期",
-            "winter": "雪山用",
-            "overnight": "テント泊",
-            "daytrip": "日帰り",
-            "essential": "必須"
+            "essential": "必須",
+            "hut": "山小屋泊",
+            "tent": "テント泊",
+            "winter": "雪山",
+            "winter-tent": "雪山テント泊",
+            "technical": "テクニカル",
+            "airplane": "飛行機移動",
+            "car": "車移動",
         };
 
         const EQUIPMENT_DATA = [
             {
-                category: "🎒 ウェア・靴",
+                category: "🎒 ウェア",
                 items: [
-                    { name: "登山靴", labels: ["summer", "winter", "daytrip", "overnight", "essential"] },
-                    { name: "レインウェア（上下）", labels: ["essential", "summer", "winter"] },
-                    { name: "アイゼン", labels: ["winter"] },
-                    { name: "防寒着（ダウン等）", labels: ["winter", "overnight"] },
-                    { name: "着替えの靴下", labels: ["overnight"] }
+                    { name: "レインウェア（上下）", labels: ["essential"] },
+                    { name: "着替え上下", labels: ["essential"] },
+                    { name: "パンツ・靴下", labels: ["essential"] },
+                    { name: "タオル", labels: ["essential"] },
+                    { name: "帽子", labels: ["essential"] },
+                    { name: "着替え袋", labels: ["essential"] },
+                    { name: "防寒着", labels: ["hut", "tent", "winter", "winter-tent"] },
+                    { name: "手袋", labels: ["winter", "winter-tent"] },
+                    { name: "ニット帽・バラクラバ・ネックウォーマー", labels: ["winter", "winter-tent"] },
+                    { name: "ゲイター", labels: ["winter", "winter-tent"] },
                 ]
             },
             {
-                category: "🔦 ギア・小物",
+                category: "🔦 ギア",
                 items: [
-                    { name: "ザック", labels: [] },
-                    { name: "ヘッドランプ", labels: ["essential", "overnight"] },
-                    { name: "地図・コンパス", labels: [] },
-                    { name: "登山計画書", labels: ["essential"] },
-                    { name: "ピッケル", labels: ["winter"] }
+                    { name: "登山靴", labels: ["essential"] },
+                    { name: "雪山登山靴", labels: ["winter", "winter-tent"] },
+                    { name: "ザック", labels: ["essential"] },
+                    { name: "アタックザック", labels: ["technical"] },
+                    { name: "ストック", labels: ["winter", "winter-tent"] },
+                    { name: "ピッケル", labels: ["winter", "winter-tent"] },
+                    { name: "12本爪アイゼン", labels: ["winter", "winter-tent"] },
+                    { name: "軽アイゼン", labels: ["winter", "winter-tent"] },
+                    { name: "チェーンスパイク", labels: ["winter", "winter-tent"] },
+                    { name: "ワカン", labels: ["winter", "winter-tent"] },
+                    { name: "スノーシュー", labels: ["winter", "winter-tent"] },
+                    { name: "シャベル", labels: ["winter", "winter-tent"] },
+                    { name: "ヘルメット", labels: ["technical"] },
                 ]
             },
             {
-                category: "⛺ 居住・自炊",
+                category: "🍱 飲食",
                 items: [
-                    { name: "テント", labels: ["overnight"] },
-                    { name: "寝袋（シュラフ）", labels: ["overnight"] },
-                    { name: "マット", labels: ["overnight"] },
-                    { name: "バーナー・クッカー", labels: ["overnight"] }
+                    { name: "水", labels: ["essential"] },
+                    { name: "保温ボトル", labels: ["winter", "winter-tent"] },
+                    { name: "行動食", labels: ["essential"] },
+                    { name: "拠点食", labels: ["hut", "tent"] }
+                ]
+            },
+            {
+                category: "⛺ 宿泊",
+                items: [
+                    { name: "テント(本体+フライシート+ペグ)", labels: ["tent", "winter-tent"] },
+                    { name: "テント(ポール)", labels: ["tent", "winter-tent"] },
+                    { name: "グラウンドシート", labels: ["tent", "winter-tent"] },
+                    { name: "フォームパッド", labels: ["tent"] },
+                    { name: "エアマット", labels: ["winter-tent"] },
+                    { name: "寝袋", labels: ["hut", "tent", "winter-tent"] },
+                    { name: "寝袋カバー", labels: ["hut", "tent", "winter-tent"] },
+                    { name: "バーナー・クッカー", labels: ["hut", "tent", "winter-tent"] },
+                    { name: "マグカップ", labels: ["hut", "tent", "winter-tent"] },
+                    { name: "ガス缶", labels: ["hut", "tent", "winter-tent"] },
+                    { name: "ライター", labels: ["hut", "tent", "winter-tent"] },
+                    { name: "スプーン・箸", labels: ["hut", "tent", "winter-tent"] },
+                    { name: "竹ペグ", labels: ["winter-tent"] },
+                ]
+            },
+            {
+                category: "🔧 小物",
+                items: [
+                    { name: "スマホ・モバイルバッテリー", labels: ["essential"] },
+                    { name: "財布(現金・保険証)", labels: ["essential"] },
+                    { name: "コンタクトレンズ", labels: ["essential"] },
+                    { name: "眼鏡", labels: ["essential"] },
+                    { name: "地図", labels: ["essential"] },
+                    { name: "コンパス", labels: ["essential"] },
+                    { name: "腕時計", labels: ["essential"] },
+                    { name: "ウェットティッシュ", labels: ["essential"] },
+                    { name: "日焼け止め", labels: ["essential"] },
+                    { name: "歯ブラシ", labels: ["essential"] },
+                    { name: "サングラス", labels: ["essential"] },
+                    { name: "ザックカバー", labels: ["essential"] },
+                    { name: "ホッカイロ", labels: ["winter", "winter-tent"] },
+                    { name: "スマホケース・タッチペン・ストラップ", labels: ["winter", "winter-tent"] },
+                    { name: "漏斗", labels: ["winter-tent"] },
+                ]
+            },
+            {
+                category: "🚨 非常用",
+                items: [
+                    { name: "ファーストエイドキット", labels: ["essential"] },
+                    { name: "靴紐スペア", labels: ["essential"] },
+                    { name: "トイレットペーパー", labels: ["essential"] },
+                    { name: "携帯トイレ", labels: ["essential"] },
+                    { name: "ポケットナイフ", labels: ["essential"] },
+                    { name: "ヘッドライト+電池", labels: ["essential"] }
+                ]
+            },
+            {
+                category: "🧑‍🤝‍🧑 その他",
+                items: [
+                    { name: "免許・ETCカード", labels: ["car"] },
+                    { name: "JALマイレージバンクカード", labels: ["airplane"] },
+                    { name: "アイマスク", labels: ["hut", "tent", "winter-tent"] },
+                    { name: "耳栓", labels: ["hut", "tent", "winter-tent"] },
+                    { name: "サンダル", labels: ["hut", "tent"] },
+                    { name: "折り畳み傘", labels: ["hut", "tent"] }
                 ]
             }
         ];
